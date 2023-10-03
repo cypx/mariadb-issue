@@ -1,0 +1,16 @@
+version: '3'
+services:
+  mariadb:
+    image: mariadb:10.2.38
+    volumes:
+      - ./mariadb.cnf:/etc/mysql/conf.d/mariadb.cnf
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: magentodb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypass
+    healthcheck:
+        test: ["CMD-SHELL", "mysqladmin -p${MYSQL_ROOT_PASSWORD:-nopassword} ping"]
+        interval: 20s
+        timeout: 5s
+        retries: 5
