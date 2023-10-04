@@ -1,9 +1,10 @@
 #!/bin/bash
 
+export MARIADB_VERSION=${1:-10.2.37}
+
 docker compose up -d --wait
-docker compose exec -it mariadb mysql -p'root' -e "CREATE DATABASE IF NOT EXISTS erpdb;"
-docker compose exec -it mariadb mysql -p'root' -e "GRANT ALL PRIVILEGES ON erpdb.* TO 'myuser'@'%' WITH GRANT OPTION;"
-docker compose exec -T mariadb mysql -u myuser -p'mypass' magentodb < magentodb.sql
-docker compose exec -T mariadb mysql -u myuser -p'mypass' erpdb < erpdb.sql
-time docker-compose exec -T mariadb mysql -u myuser -p'mypass' < request.sql
+docker compose exec -T mariadb mysql -u root -p'root' magentodb < magentodb.sql
+echo " # MariaDB $MARIADB_VERSION - request start: $(date)"
+time docker-compose exec -T mariadb mysql -u myuser -p'mypass' < request.sql > /dev/null
+echo " # MariaDB $MARIADB_VERSION - request end: $(date)"
 docker compose down

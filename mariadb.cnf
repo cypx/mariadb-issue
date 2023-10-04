@@ -1,8 +1,0 @@
-[mysqld]
-##
-## Behaviour
-##
-default-storage_engine  = InnoDB
-innodb_file_per_table
-character_set_server    = utf8mb4
-sql_mode = ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
