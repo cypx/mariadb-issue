@@ -1,7 +1,13 @@
 version: '3'
 services:
   mariadb:
-    image: mariadb:${MARIADB_VERSION:-10.2.37}
+    image: mariadb:${MARIADB_VERSION:-10.4.18}
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        VERSION: ${MARIADB_VERSION}
+        REL: focal
     volumes:
       - ./tuning.cnf:/etc/mysql/conf.d/tuning.cnf
     environment:
@@ -10,7 +16,7 @@ services:
       MYSQL_USER: myuser
       MYSQL_PASSWORD: mypass
     healthcheck:
-        test: ["CMD-SHELL", "mysqladmin -p${MYSQL_ROOT_PASSWORD:-nopassword} ping"]
+        test: ["CMD-SHELL", "healthcheck.sh", "--connect"]
         interval: 20s
         timeout: 5s
         retries: 5
